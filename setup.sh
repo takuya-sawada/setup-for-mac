@@ -4,8 +4,6 @@
 BREW_DIR="./brew-settings"
 BREW_TAP_LIST="brew-tap-list"
 BREW_LIST="brew-list"
-BREW_CASK_LIST="brew-cask-list"
-
 
 # functions
 has() {
@@ -42,8 +40,7 @@ setup_prezto() {
 setup_homebrew() {
   install_homebrew &&
   install_homebrew_tap &&
-  install_homebrew_packages &&
-  install_homebrew_cask_packages
+  install_homebrew_packages
 }
 
 install_homebrew() {
@@ -80,21 +77,7 @@ install_homebrew_packages() {
   done
 }
 
-install_homebrew_cask_packages() {
-  callstart "brew cask install packages"
-  for cask in `cat $BREW_DIR/$BREW_CASK_LIST`; do
-    if brew cask list -1 | grep -q "^$cask"; then
-      callskip "already installed ${cask}"
-    else
-      callinstall $cask
-      brew cask install $cask
-    fi
-  done
-}
-
-
 setup_prezto &&
   setup_homebrew || exit $?
 
 exit
-
